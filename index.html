@@ -6,7 +6,7 @@
 <title>ARYAN PARDESHI — AI ENGINEER — MUMBAI</title>
 <meta name="description" content="Aryan Pardeshi. AI engineer in Mumbai. Multi-agent systems that run in production.">
 <meta name="theme-color" content="#E9E4D6">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23101010'/%3E%3Crect x='18' y='6' width='8' height='8' fill='%23A30000'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23101010'/%3E%3Crect x='18' y='6' width='8' height='8' fill='%23FF2C00'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -15,7 +15,7 @@
 <style>
 /* ============ CORE ============ */
 :root{
-  --bg:#E9E4D6; --ink:#101010; --acc:#A30000; --on:#F6F1E5;
+  --bg:#E9E4D6; --ink:#101010; --acc:#FF2C00; --on:#F6F1E5;
   --head:'Archivo Black',Impact,'Arial Black',sans-serif;
   --mono:'Space Mono','Courier New',monospace;
 }
@@ -60,9 +60,6 @@ html.has-cur #cur{display:block}
 .ci.m-link::after{display:none}
 .ci.m-text{width:7px;height:54px;border-radius:0;background:var(--acc);transform:rotate(0deg)}
 .ci.m-text::after{display:none}
-.ci.m-glass{width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,0.22);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1.5px solid rgba(255,255,255,0.55);box-shadow:0 10px 36px rgba(0,0,0,0.22),inset 0 0 20px rgba(255,255,255,0.15);transform:rotate(0deg);animation:glassPulse 2.4s ease-in-out infinite alternate}
-@keyframes glassPulse{from{box-shadow:0 10px 36px rgba(0,0,0,0.22),inset 0 0 20px rgba(255,255,255,0.15)}to{box-shadow:0 14px 48px rgba(0,0,0,0.28),inset 0 0 24px rgba(255,255,255,0.22)}}
-.ci.m-glass::after{display:none}
 #curTag{position:fixed;left:0;top:0;z-index:120;pointer-events:none;opacity:0;
   font:700 11px/1 var(--mono);letter-spacing:.14em;
   background:var(--ink);color:var(--bg);padding:6px 9px;white-space:nowrap;
@@ -88,9 +85,7 @@ html.has-cur #curTag{display:block}
 .stamp{display:inline-block;font-family:var(--head);text-transform:uppercase;
   font-size:clamp(.9rem,1.6vw,1.5rem);line-height:1.05;letter-spacing:.05em;
   color:var(--acc);border:4px solid var(--acc);padding:.45em .7em;
-  transform:rotate(-4deg);background:transparent;
-  animation:stampFloat 5s ease-in-out infinite alternate}
-@keyframes stampFloat{from{transform:rotate(-4deg) translateY(0)}to{transform:rotate(-3.5deg) translateY(-3px)}}
+  transform:rotate(-4deg);background:transparent}
 #s1 .stamp{color:var(--ink);border-color:var(--ink)}
 a.stamp{transition:background .15s}
 a.stamp:hover{background:var(--acc);color:var(--on)}
@@ -100,20 +95,19 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
 .ticker-in{display:inline-flex;white-space:nowrap;will-change:transform;animation:tick 28s linear infinite}
 .ticker-in>span{font:700 clamp(.8rem,1.4vw,1.1rem)/1 var(--mono);letter-spacing:.18em;padding:.9em 0;flex:none}
 @keyframes tick{to{transform:translateX(-50%)}}
-@keyframes themePulse{0%{opacity:.55;filter:blur(1.5px);transform:scale(.995)}50%{opacity:1;filter:blur(0);transform:scale(1.005)}100%{opacity:1;filter:blur(0);transform:scale(1)}}
 
 /* ============ LOADER ============ */
 #loader{position:fixed;inset:0;z-index:100}
 .strip{position:absolute;left:0;width:100%;height:calc(100%/6 + 1px);background:#101010}
-.strip:nth-child(1){top:0}.strip:nth-child(2){top:16.66%}.strip:nth-child(3){top:33.33%;background:#A30000}
+.strip:nth-child(1){top:0}.strip:nth-child(2){top:16.66%}.strip:nth-child(3){top:33.33%;background:#FF2C00}
 .strip:nth-child(4){top:50%}.strip:nth-child(5){top:66.66%}.strip:nth-child(6){top:83.33%}
 .l-mid{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4vh;color:#E9E4D6}
 .l-name{font-family:var(--head);font-size:clamp(2rem,7.5vw,8rem);line-height:1;text-transform:uppercase;letter-spacing:-.01em;white-space:nowrap}
 .lltr{display:inline-block}
 .l-row{display:flex;align-items:baseline;gap:2em;font:700 12px/1 var(--mono);letter-spacing:.25em;color:#E9E4D6}
-.l-row .spin{display:inline-block;color:#A30000;animation:spin 1.6s linear infinite;font-size:16px}
+.l-row .spin{display:inline-block;color:#FF2C00;animation:spin 1.6s linear infinite;font-size:16px}
 @keyframes spin{to{transform:rotate(360deg)}}
-#lc{font:700 clamp(2rem,4vw,3.4rem)/1 var(--mono);color:#A30000;letter-spacing:.05em}
+#lc{font:700 clamp(2rem,4vw,3.4rem)/1 var(--mono);color:#FF2C00;letter-spacing:.05em}
 
 /* ============ S0 — HERO ============ */
 #s0{min-height:100vh;display:flex;flex-direction:column}
@@ -180,9 +174,7 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
 .w.t3{font-size:clamp(.85rem,1.7vw,1.7rem);font-family:var(--mono);font-weight:700;letter-spacing:.08em}
 .bars{margin-top:9vh;display:flex;flex-direction:column}
 .bar{border-top:3px solid var(--ink);padding:1.1em 0;
-  font:700 clamp(.72rem,1vw,.95rem)/1.6 var(--mono);letter-spacing:.14em;text-transform:uppercase;
-  transition:background .2s,color .2s,padding-left .2s,letter-spacing .25s ease-out}
-.bar:hover{background:rgba(163,0,0,.06);padding-left:.4em;letter-spacing:.18em}
+  font:700 clamp(.72rem,1vw,.95rem)/1.6 var(--mono);letter-spacing:.14em;text-transform:uppercase}
 .bar:last-child{border-bottom:3px solid var(--ink)}
 .bar b{color:var(--acc)}
 .bar.big{font-family:var(--head);font-weight:400;font-size:clamp(1.3rem,3.4vw,3.4rem);letter-spacing:0;line-height:1.05}
@@ -408,6 +400,7 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
     <div class="bars">
       <div class="bar bslide">STANFORD × DEEPLEARNING.AI — MACHINE LEARNING SPECIALIZATION — <b>COMPLETE</b></div>
       <div class="bar bslide">K.J. SOMAIYA COLLEGE OF ENGINEERING — B.TECH, INFORMATION TECHNOLOGY — 2025→2029 — MUMBAI</div>
+      <div class="bar bslide big">TARGET LOCKED — <b>GSOC 2027</b></div>
       <div class="bar bslide">CURRENTLY — DIRECT OUTREACH TO AI STARTUPS — THINKS IN SYSTEMS, NOT SCRIPTS</div>
     </div>
   </div>
@@ -481,11 +474,11 @@ $('#today').textContent = new Date().toLocaleDateString('en-GB',
 
 /* ---------- themes ---------- */
 const THEMES=[
-  {bg:[233,228,214], ink:[16,16,16],    acc:[163,0,0],   on:[246,241,229]}, // hero: paper / red
+  {bg:[233,228,214], ink:[16,16,16],    acc:[255,44,0],   on:[246,241,229]}, // hero: paper / red
   {bg:[16,7,22],     ink:[233,228,214], acc:[52,21,57],   on:[255,255,255]}, // systems: near-black purple / ivory / plum #341539
-  {bg:[163,0,0],     ink:[246,241,229], acc:[163,0,0],   on:[246,241,229]}, // field: red / #A30000
+  {bg:[255,44,0],    ink:[246,241,229], acc:[16,16,16],   on:[246,241,229]}, // field: red / black
   {bg:[233,228,214], ink:[16,16,16],    acc:[36,48,255],  on:[246,241,229]}, // arsenal: paper / blue
-  {bg:[16,16,16],    ink:[233,228,214], acc:[163,0,0],   on:[246,241,229]}, // contact: ink / red
+  {bg:[16,16,16],    ink:[233,228,214], acc:[255,44,0],   on:[246,241,229]}, // contact: ink / red
 ];
 const secs = ['s0','s1','s2','s3','s4'].map(id=>document.getElementById(id));
 const cur = JSON.parse(JSON.stringify(THEMES[0]));
@@ -493,27 +486,6 @@ let secIdx = 0;
 const css = c=>`rgb(${c[0]|0},${c[1]|0},${c[2]|0})`;
 
 function themeTick(){
-  // Smooth continuous scroll progress interpolation across sections
-  const scrollY = window.scrollY;
-  const docH = Math.max(1, document.documentElement.scrollHeight - H());
-  const progress = Math.max(0, Math.min(1, scrollY / docH));
-  const n = THEMES.length;
-  const scaled = progress * (n - 1);
-  const idx1 = Math.floor(scaled);
-  const idx2 = Math.min(n - 1, idx1 + 1);
-  const tFrac = scaled - idx1;
-  const smoothT = tFrac * tFrac * (3 - 2 * tFrac); // smoothstep
-
-  const th1 = THEMES[idx1], th2 = THEMES[idx2];
-  const k = RM ? 1 : 0.035; // smoother, slower blend for less abrupt feel
-
-  for(const key of ['bg','ink','acc','on']){
-    for(let i=0;i<3;i++){
-      const target = lerp(th1[key][i], th2[key][i], smoothT);
-      cur[key][i] = lerp(cur[key][i], target, k);
-    }
-  }
-
   const cy = H()*0.5;
   let idx = secIdx;
   for(let i=0;i<secs.length;i++){
@@ -521,7 +493,9 @@ function themeTick(){
     if(r.top<=cy && r.bottom>cy){ idx=i; break; }
   }
   if(idx!==secIdx){ secIdx=idx; onSection(idx); }
-
+  const t = THEMES[secIdx], k = RM?1:0.075;
+  for(const key of ['bg','ink','acc','on'])
+    for(let i=0;i<3;i++) cur[key][i]=lerp(cur[key][i],t[key][i],k);
   const b=css(cur.bg), n=css(cur.ink), a=css(cur.acc), o=css(cur.on);
   const sig=b+n+a+o;
   if(sig!==lastSig){                 // only touch :root when a channel actually moved
@@ -535,17 +509,6 @@ let lastSig='';
 function onSection(i){
   document.body.dataset.sec=i;
   if(curInner) curInner.className='ci s'+i+(mode?' '+mode:'');
-  // brief visual pulse when theme shifts to smooth the abrupt change
-  const heads=$$('.sec-head');
-  heads.forEach(h=>{
-    h.style.animation='none';
-    requestAnimationFrame(()=>{
-      requestAnimationFrame(()=>{
-        h.style.animation='themePulse .55s ease-out';
-        h.addEventListener('animationend',()=>{ h.style.animation='';},{once:true});
-      });
-    });
-  });
 }
 
 /* ---------- mouse ---------- */
@@ -698,10 +661,10 @@ function initCursor(){
     if(!(t instanceof Element)) return;
     const tagged=t.closest('[data-cur]');
     const link=t.closest('a,button');
-    const txt=t.closest('.rip, p, h1, h2, h3, .p-tag, .oss-txt, .j-txt, .bar, .spec dt, .spec dd');
+    const txt=t.closest('.rip');
     if(tagged) setMode('m-link',tagged.dataset.cur);
     else if(link) setMode('m-link','OPEN');
-    else if(txt) setMode('m-glass','');
+    else if(txt) setMode('m-text','');
     else setMode('','');
   });
 }
