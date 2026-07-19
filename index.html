@@ -60,7 +60,8 @@ html.has-cur #cur{display:block}
 .ci.m-link::after{display:none}
 .ci.m-text{width:7px;height:54px;border-radius:0;background:var(--acc);transform:rotate(0deg)}
 .ci.m-text::after{display:none}
-.ci.m-glass{width:64px;height:36px;border-radius:18px;background:rgba(255,255,255,0.18);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1.5px solid rgba(255,255,255,0.45);box-shadow:0 8px 32px rgba(0,0,0,0.25);transform:rotate(0deg)}
+.ci.m-glass{width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,0.22);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1.5px solid rgba(255,255,255,0.55);box-shadow:0 10px 36px rgba(0,0,0,0.22),inset 0 0 20px rgba(255,255,255,0.15);transform:rotate(0deg);animation:glassPulse 2.4s ease-in-out infinite alternate}
+@keyframes glassPulse{from{box-shadow:0 10px 36px rgba(0,0,0,0.22),inset 0 0 20px rgba(255,255,255,0.15)}to{box-shadow:0 14px 48px rgba(0,0,0,0.28),inset 0 0 24px rgba(255,255,255,0.22)}}
 .ci.m-glass::after{display:none}
 #curTag{position:fixed;left:0;top:0;z-index:120;pointer-events:none;opacity:0;
   font:700 11px/1 var(--mono);letter-spacing:.14em;
@@ -87,7 +88,9 @@ html.has-cur #curTag{display:block}
 .stamp{display:inline-block;font-family:var(--head);text-transform:uppercase;
   font-size:clamp(.9rem,1.6vw,1.5rem);line-height:1.05;letter-spacing:.05em;
   color:var(--acc);border:4px solid var(--acc);padding:.45em .7em;
-  transform:rotate(-4deg);background:transparent}
+  transform:rotate(-4deg);background:transparent;
+  animation:stampFloat 5s ease-in-out infinite alternate}
+@keyframes stampFloat{from{transform:rotate(-4deg) translateY(0)}to{transform:rotate(-3.5deg) translateY(-3px)}}
 #s1 .stamp{color:var(--ink);border-color:var(--ink)}
 a.stamp{transition:background .15s}
 a.stamp:hover{background:var(--acc);color:var(--on)}
@@ -97,6 +100,7 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
 .ticker-in{display:inline-flex;white-space:nowrap;will-change:transform;animation:tick 28s linear infinite}
 .ticker-in>span{font:700 clamp(.8rem,1.4vw,1.1rem)/1 var(--mono);letter-spacing:.18em;padding:.9em 0;flex:none}
 @keyframes tick{to{transform:translateX(-50%)}}
+@keyframes themePulse{0%{opacity:.55;filter:blur(1.5px);transform:scale(.995)}50%{opacity:1;filter:blur(0);transform:scale(1.005)}100%{opacity:1;filter:blur(0);transform:scale(1)}}
 
 /* ============ LOADER ============ */
 #loader{position:fixed;inset:0;z-index:100}
@@ -176,7 +180,9 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
 .w.t3{font-size:clamp(.85rem,1.7vw,1.7rem);font-family:var(--mono);font-weight:700;letter-spacing:.08em}
 .bars{margin-top:9vh;display:flex;flex-direction:column}
 .bar{border-top:3px solid var(--ink);padding:1.1em 0;
-  font:700 clamp(.72rem,1vw,.95rem)/1.6 var(--mono);letter-spacing:.14em;text-transform:uppercase}
+  font:700 clamp(.72rem,1vw,.95rem)/1.6 var(--mono);letter-spacing:.14em;text-transform:uppercase;
+  transition:background .2s,color .2s,padding-left .2s,letter-spacing .25s ease-out}
+.bar:hover{background:rgba(163,0,0,.06);padding-left:.4em;letter-spacing:.18em}
 .bar:last-child{border-bottom:3px solid var(--ink)}
 .bar b{color:var(--acc)}
 .bar.big{font-family:var(--head);font-weight:400;font-size:clamp(1.3rem,3.4vw,3.4rem);letter-spacing:0;line-height:1.05}
@@ -477,7 +483,7 @@ $('#today').textContent = new Date().toLocaleDateString('en-GB',
 const THEMES=[
   {bg:[233,228,214], ink:[16,16,16],    acc:[163,0,0],   on:[246,241,229]}, // hero: paper / red
   {bg:[16,7,22],     ink:[233,228,214], acc:[52,21,57],   on:[255,255,255]}, // systems: near-black purple / ivory / plum #341539
-  {bg:[163,0,0],     ink:[246,241,229], acc:[16,16,16],   on:[246,241,229]}, // field: red / black
+  {bg:[163,0,0],     ink:[246,241,229], acc:[163,0,0],   on:[246,241,229]}, // field: red / #A30000
   {bg:[233,228,214], ink:[16,16,16],    acc:[36,48,255],  on:[246,241,229]}, // arsenal: paper / blue
   {bg:[16,16,16],    ink:[233,228,214], acc:[163,0,0],   on:[246,241,229]}, // contact: ink / red
 ];
@@ -499,7 +505,7 @@ function themeTick(){
   const smoothT = tFrac * tFrac * (3 - 2 * tFrac); // smoothstep
 
   const th1 = THEMES[idx1], th2 = THEMES[idx2];
-  const k = RM ? 1 : 0.08;
+  const k = RM ? 1 : 0.035; // smoother, slower blend for less abrupt feel
 
   for(const key of ['bg','ink','acc','on']){
     for(let i=0;i<3;i++){
@@ -529,6 +535,17 @@ let lastSig='';
 function onSection(i){
   document.body.dataset.sec=i;
   if(curInner) curInner.className='ci s'+i+(mode?' '+mode:'');
+  // brief visual pulse when theme shifts to smooth the abrupt change
+  const heads=$$('.sec-head');
+  heads.forEach(h=>{
+    h.style.animation='none';
+    requestAnimationFrame(()=>{
+      requestAnimationFrame(()=>{
+        h.style.animation='themePulse .55s ease-out';
+        h.addEventListener('animationend',()=>{ h.style.animation='';},{once:true});
+      });
+    });
+  });
 }
 
 /* ---------- mouse ---------- */
