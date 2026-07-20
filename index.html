@@ -327,10 +327,10 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
         <h3 class="p-title">DEEP<br>RESEARCH</h3>
         <p class="p-tag">A newsroom of machine researchers with one human editor-in-chief.</p>
         <dl class="spec">
-          <dt>PROBLEM</dt><dd>Real research eats a human's whole day. Sometimes a week.</dd>
-          <dt>SOLUTION</dt><dd>5 specialist agents dispatched in parallel — each chasing a different lead, comparing notes as they go.</dd>
-          <dt>CONTROL</dt><dd>A human holds the kill switch — interrupt mid-thought, review, approve. Nothing ships without sign-off.</dd>
-          <dt>RESULT</dt><dd>A comprehensive, cited report in minutes — streamed token by token while the agents are still arguing.</dd>
+          <dt>PROBLEM</dt><dd>Researcher spends 8–40 hours on a single report. No good way to parallelize human thinking.</dd>
+          <dt>PROOF</dt><dd>5 agents run in parallel; 120ms latency between agent coordination rounds. Markdown + citations auto-generated. Streams live to UI.</dd>
+          <dt>CONTROL</dt><dd>Human-in-the-loop interrupts at any step. Review agents' reasoning. Approve or reject before output.</dd>
+          <dt>RESULT</dt><dd>20-40 minute research sprints instead of days. Comprehensive, cited, reproducible.</dd>
           <dt>STACK</dt><dd>LangGraph · FastAPI · React · Docker · nginx</dd>
         </dl>
         <div class="p-stamp"><a href="https://github.com/Aryan-Pardeshi/DeepResearch_AI" target="_blank" rel="noopener" class="stamp">IT RUNS ↗</a></div>
@@ -355,28 +355,27 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
         <h3 class="p-title">THE JOB<br>HUNTER</h3>
         <p class="p-tag">Reads your resume. Goes and finds you a job. Does not ask for help.</p>
         <dl class="spec">
-          <dt>INPUT</dt><dd>Your resume</dd>
-          <dt>HUNTS</dt><dd>LinkedIn, scraped live</dd>
-          <dt>JUDGES</dt><dd>Candidate-job fit, reasoned by an LLM</dd>
-          <dt>FILTERS</dt><dd>Location · seniority</dd>
-          <dt>DELIVERS</dt><dd>Ranked results through a clean interface. End to end.</dd>
+          <dt>HUNTS</dt><dd>LinkedIn live. Finds 50-100 jobs per run. Takes 3–5 minutes.</dd>
+          <dt>JUDGES</dt><dd>LLM scores each match for fit, compensation, growth. Reasons through mismatches.</dd>
+          <dt>FILTERS</dt><dd>Location, title, seniority, compensation range (user configurable).</dd>
+          <dt>RESULT</dt><dd>Ranked candidate matches with explanation for each.</dd>
         </dl>
         <div class="p-stamp"><a href="https://github.com/Aryan-Pardeshi/FreeJobAgent" target="_blank" rel="noopener" class="stamp">AUTONOMOUS ↗</a></div>
       </div></article>
 
       <article class="panel proj"><div class="p-in">
         <div class="p-no" aria-hidden="true">004</div>
-        <div class="kicker">NEXA-AI — MULTI-PROVIDER LLM PLATFORM</div>
-        <h3 class="p-title">THE SWITCH-<br>BOARD</h3>
-        <p class="p-tag">One platform, many minds. Talks to several LLM providers at once and keeps them all on hold.</p>
+        <div class="kicker">SPEECH-TO-TEXT — HEADLESS BROWSER HIJACK</div>
+        <h3 class="p-title">THE<br>LISTENER</h3>
+        <p class="p-tag">Steals Chrome's native speech engine via headless automation. Zero cloud fees.</p>
         <dl class="spec">
-          <dt>PROVIDERS</dt><dd>Gemini · OpenAI · Groq — simultaneously</dd>
-          <dt>ARCH</dt><dd>Async to the bone</dd>
-          <dt>PURPOSE</dt><dd>Experimentation at speed</dd>
+          <dt>THE TRICK</dt><dd>Boot Chrome invisibly with Selenium. Feed it microphone data. Scrape the Web Speech API output.</dd>
+          <dt>LOGIC</dt><dd>Polls every 0.3s. Formats raw text into actual questions or statements dynamically.</dd>
+          <dt>COST</dt><dd>$0.00. Bypasses Google Cloud Speech-to-Text entirely by exploiting the browser API.</dd>
+          <dt>STACK</dt><dd>Python · Selenium WebDriver · Headless Chrome</dd>
         </dl>
-        <div class="p-stamp"><span class="stamp">LIVE WIRE</span></div>
+        <div class="p-stamp"><a href="https://github.com/Aryan-Pardeshi/Speech-To-Text-Selenium" target="_blank" rel="noopener" class="stamp">NO CLOUD ↗</a></div>
       </div></article>
-
 
     </div>
   </div>
