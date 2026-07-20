@@ -5,6 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ARYAN PARDESHI — AI ENGINEER — MUMBAI</title>
 <meta name="description" content="Aryan Pardeshi. AI engineer in Mumbai. Multi-agent systems that run in production.">
+
+<!-- OpenGraph / Social Sharing -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="ARYAN PARDESHI — AI ENGINEER — MUMBAI">
+<meta property="og:description" content="Aryan Pardeshi. AI engineer in Mumbai. Multi-agent systems that run in production.">
+<meta property="og:image" content="/og-image.png">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ARYAN PARDESHI — AI ENGINEER — MUMBAI">
+<meta name="twitter:description" content="Aryan Pardeshi. AI engineer in Mumbai. Multi-agent systems that run in production.">
+<meta name="twitter:image" content="/og-image.png">
+
 <meta name="theme-color" content="#E9E4D6">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23101010'/%3E%3Crect x='18' y='6' width='8' height='8' fill='%23FF2C00'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -142,7 +154,6 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
 .p-in .kicker{margin-bottom:1.2em}
 .p-intro{width:62vw}
 .panel.proj{width:92vw}
-.p-oss{width:62vw;border-right:none}
 .p-no{position:absolute;right:1vw;top:-2vh;font-family:var(--head);
   font-size:clamp(9rem,24vw,24rem);line-height:1;color:transparent;
   -webkit-text-stroke:3px var(--ink);opacity:.16;pointer-events:none;user-select:none}
@@ -156,7 +167,6 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
   font-size:clamp(.82rem,1.1vw,1rem);padding:clamp(.3em,1.5vh,.7em) 0 clamp(.3em,1.5vh,.7em) .9em}
 .p-stamp{margin-top:clamp(1rem,3vh,2.2em)}
 .note{font:700 .85rem/1.7 var(--mono);letter-spacing:.06em;max-width:38ch;margin-top:1.6em;text-transform:uppercase}
-.oss-txt{max-width:40ch;font-size:clamp(.9rem,1.2vw,1.1rem);line-height:1.7;margin-bottom:1.6em}
 
 /* ============ S2 — FIELD WORK ============ */
 .jobs{margin-top:6vh}
@@ -245,9 +255,9 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
 <!-- ================= S0 HERO ================= -->
 <section class="sec" id="s0">
   <header class="masthead">
-    <div></div>
-    <div class="mh-mid">MUMBAI EDITION — <span id="today">2026</span></div>
-    <div class="mh-r"></div>
+    <div>AI ENGINEER — MUMBAI, IN</div>
+    <div class="mh-mid"><span id="today">2026</span></div>
+    <div class="mh-r" id="clock"></div>
   </header>
   <div class="hero-core skewable">
     <h1 class="giant rip">ARYAN</h1>
@@ -333,12 +343,6 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
         <div class="p-stamp"><span class="stamp">LIVE WIRE</span></div>
       </div></article>
 
-      <article class="panel p-oss"><div class="p-in">
-        <div class="kicker">APPENDIX A — OPEN SOURCE</div>
-        <h3 class="p-title">MERGED<br>UPSTREAM</h3>
-        <p class="oss-txt">Pull requests to open-source projects — reviewed by strangers, accepted, shipped. He doesn't just run other people's code. He corrects it.</p>
-        <div><span class="stamp">MERGED ✓</span></div>
-      </div></article>
 
     </div>
   </div>
@@ -362,7 +366,7 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
         <div class="j-ix">02</div>
         <div>
           <h3 class="j-org">SWDC</h3>
-          <div class="j-role">ENGINEERING INTERN — BACKEND OWNER</div>
+          <div class="j-role">ENGINEERING INTERN — BACKEND OWNER — JULY 2026</div>
         </div>
         <p class="j-txt">Owned the backend architecture of a shipped AI learning product — every route, model, migration and seed pipeline. See exhibit 002, opposite page.</p>
       </div>
@@ -370,7 +374,7 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
         <div class="j-ix">03</div>
         <div>
           <h3 class="j-org">SMLRA</h3>
-          <div class="j-role">FIRST-YEAR REPRESENTATIVE — ML RESEARCH ASSOCIATION</div>
+          <div class="j-role">FIRST-YEAR REPRESENTATIVE — ML RESEARCH ASSOCIATION — 1 YEAR</div>
         </div>
         <p class="j-txt">Somaiya Machine Learning Research Association. Co-facilitated a two-day hands-on n8n workshop on AI workflow automation and taught the full module on email automation. Teaching a system is the final proof you understand it.</p>
       </div>
@@ -458,7 +462,7 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
   <div class="strip"></div><div class="strip"></div><div class="strip"></div>
   <div class="strip"></div><div class="strip"></div><div class="strip"></div>
   <div class="l-mid">
-    <div class="l-name lsplit" id="lname">LODING...</div>
+    <div class="l-name lsplit" id="lname">LOADING...</div>
     <div class="l-row"><span id="lc">000</span><span><span class="spin">✳</span>&nbsp;&nbsp;PRINTING THE DISPATCH</span></div>
   </div>
 </div>
@@ -479,6 +483,13 @@ history.scrollRestoration='manual'; scrollTo(0,0);
 
 $('#today').textContent = new Date().toLocaleDateString('en-GB',
   {weekday:'long', day:'2-digit', month:'long', year:'numeric'}).toUpperCase();
+
+const clockEl = $('#clock');
+if (clockEl) {
+  const updateClock = () => clockEl.textContent = new Date().toLocaleTimeString('en-GB');
+  updateClock();
+  setInterval(updateClock, 1000);
+}
 
 /* ---------- themes ---------- */
 const THEMES=[
