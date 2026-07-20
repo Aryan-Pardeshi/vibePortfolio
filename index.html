@@ -123,6 +123,7 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
 .l-row .spin{display:inline-block;color:#FF2C00;animation:spin 1.6s linear infinite;font-size:16px}
 @keyframes spin{to{transform:rotate(360deg)}}
 #lc{font:700 clamp(2rem,4vw,3.4rem)/1 var(--mono);color:#FF2C00;letter-spacing:.05em}
+.l-mob-warn{display:none;font:700 10px/1.4 var(--mono);text-align:center;color:#FF2C00;max-width:26ch;text-transform:uppercase;margin-top:2vh}
 
 /* ============ S0 — HERO ============ */
 #s0{min-height:100vh;min-height:100svh;display:flex;flex-direction:column}
@@ -227,7 +228,14 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
   display:flex;flex-wrap:wrap;gap:1em 3em;justify-content:space-between;
   font:700 10px/1.6 var(--mono);letter-spacing:.16em;text-transform:uppercase}
 /* ============ NAV INDEX ============ */
-#nav-index{position:fixed;bottom:3vh;right:3vw;z-index:90;border:3px solid var(--ink);background:var(--bg);color:var(--ink);padding:1.2em;display:flex;flex-direction:column;gap:.6em;min-width:200px;box-shadow:.4em .4em 0 color-mix(in srgb, var(--ink) 15%, transparent);transition:border-color .3s, background .3s, color .3s}
+#nav-index{position:fixed;top:50%;right:3vw;transform:translateY(-50%);z-index:90;border:3px solid var(--ink);background:var(--bg);color:var(--ink);padding:1.2em;display:flex;flex-direction:column;gap:.6em;min-width:200px;box-shadow:.4em .4em 0 color-mix(in srgb, var(--ink) 15%, transparent);transition:border-color .3s, background .3s, color .3s, transform .38s cubic-bezier(.7,0,.2,1)}
+#nav-index.closed{transform:translateY(-50%) translateX(calc(100% + 3vw - 3px));box-shadow:none}
+#ni-toggle{position:absolute;right:100%;top:50%;transform:translateY(-50%);
+  writing-mode:vertical-rl;text-orientation:mixed;
+  background:var(--acc);color:var(--on);border:3px solid var(--ink);border-right:none;
+  font:700 11px/1 var(--mono);letter-spacing:.22em;text-transform:uppercase;
+  padding:1.1em .45em;cursor:pointer;transition:background .3s,color .3s,border-color .3s}
+#ni-toggle:hover{background:var(--ink);color:var(--bg)}
 .ni-title{font-family:var(--head);font-size:1.2rem;margin-bottom:.5em;border-bottom:3px solid var(--ink);padding-bottom:.3em;transition:border-color .3s}
 .ni-link{font:700 .8rem/1.2 var(--mono);text-transform:uppercase;color:var(--ink);text-decoration:none;transition:color .15s, padding-left .15s;display:block}
 .ni-link:hover{color:var(--acc);padding-left:.4em}
@@ -258,6 +266,7 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
   .row{grid-template-columns:1fr auto}
   .row .r-url{grid-column:1/-1}
   .mail{padding:.5em 0 .35em}
+  .l-mob-warn{display:block}
 }
 @media (prefers-reduced-motion: reduce){
   .ticker-in{animation:none}
@@ -444,10 +453,6 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
 <section class="sec" id="s4">
   <div class="pad skewable">
     <blockquote class="mission">
-      <div class="kicker">THE MISSION — VERBATIM</div>
-      <p>“Building intelligent and autonomous workflows for real business problems. Deeply involved in research on large language models and multimodal AI.”</p>
-    </blockquote>
-    <blockquote class="mission" style="margin-top: -8vh;">
       <div class="kicker">WHY AI?</div>
       <p>For decades, code only did exactly what it was told. Now, it makes decisions. I've always been obsessed with systems that run themselves, but the leap from rigid scripts to autonomous reasoning is the most profound shift in computing history. I don't just want to watch it happen—I want to be the one wiring the nervous system of that new world.</p>
     </blockquote>
@@ -479,7 +484,8 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
 </section>
 </main>
 
-<nav id="nav-index" aria-label="Contents">
+<nav id="nav-index" class="closed" aria-label="Contents">
+  <button id="ni-toggle" aria-expanded="false" aria-controls="nav-index" data-cur="INDEX">INDEX</button>
   <div class="ni-title">INDEX</div>
   <a href="#s0" class="ni-link active">00. FRONT PAGE</a>
   <a href="#s1" class="ni-link">01. SYSTEMS</a>
@@ -500,6 +506,7 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
   <div class="l-mid">
     <div class="l-name lsplit" id="lname">LOADING...</div>
     <div class="l-row"><span id="lc">000</span><span><span class="spin">✳</span>&nbsp;&nbsp;PRINTING THE DISPATCH</span></div>
+    <div class="l-mob-warn">WARNING<br>Built for desktop. Mobile uses reduced animations for better performance.</div>
   </div>
 </div>
 
@@ -869,11 +876,11 @@ function boot(){
 function heroIntro(){
   measure();
   gsap.timeline({onComplete(){ introDone=true; }})
-    .from('#s0 .ltr',{yPercent:SMALL?-35:-130,opacity:0,duration:SMALL?.45:.85,ease:SMALL?'power2.out':'bounce.out',
-      stagger:{each:SMALL?.012:.035,from:SMALL?'start':'random'}})
-    .from('.masthead>*',{scaleX:0,transformOrigin:'0 50%',duration:SMALL?.3:.5,ease:'power4',stagger:SMALL?.04:.08},'-=.3')
-    .from(['.hero-side','.deck'],{y:SMALL?16:40,opacity:0,duration:SMALL?.35:.5,ease:'power3',stagger:SMALL?.05:.1},'-=.2')
-    .from('.ticker',{yPercent:SMALL?30:100,duration:SMALL?.3:.5,ease:'power4'},'-=.25');
+    .from('#s0 .ltr',{yPercent:SMALL?-80:-130,opacity:0,duration:SMALL?.65:.85,ease:SMALL?'power3.out':'bounce.out',
+      stagger:{each:SMALL?.02:.035,from:'random'}})
+    .from('.masthead>*',{scaleX:0,transformOrigin:'0 50%',duration:SMALL?.4:.5,ease:'power4',stagger:SMALL?.05:.08},'-=.3')
+    .from(['.hero-side','.deck'],{y:SMALL?24:40,opacity:0,duration:SMALL?.4:.5,ease:'power3',stagger:SMALL?.06:.1},'-=.2')
+    .from('.ticker',{yPercent:SMALL?60:100,duration:SMALL?.4:.5,ease:'power4'},'-=.25');
 }
 
 /* ---------- scroll choreography ---------- */
@@ -898,25 +905,25 @@ function initScroll(){
     });
   }
 
-  // Use a restrained parallax exit on mobile, with no rotation.
-  gsap.to('.hero-core',{yPercent:SMALL?-5:-14,rotation:SMALL?0:-1.4,ease:'none',
+  // Use a restrained parallax exit on mobile, but keep some rotation.
+  gsap.to('.hero-core',{yPercent:SMALL?-10:-14,rotation:SMALL?-0.8:-1.4,ease:'none',
     scrollTrigger:{trigger:'#s0',start:'top top',end:'bottom top',scrub:true}});
 
   // section heads print themselves
   $$('.sec-head').forEach(h=>{
-    gsap.from(h,{yPercent:SMALL?14:35,clipPath:'inset(0% 0% 100% 0%)',duration:SMALL?.55:.8,ease:'power4.out',
+    gsap.from(h,{yPercent:SMALL?24:35,clipPath:'inset(0% 0% 100% 0%)',duration:SMALL?.65:.8,ease:'power4.out',
       scrollTrigger:{trigger:h,start:'top 85%'}});
   });
 
   // jobs — press-printed rows
   $$('.job').forEach((el,i)=>{
-    gsap.from(el,{clipPath:'inset(0% 100% 0% 0%)',x:(i%2?1:-1)*(SMALL?18:70),duration:SMALL?.55:.9,ease:'power4.out',
+    gsap.from(el,{clipPath:'inset(0% 100% 0% 0%)',x:(i%2?1:-1)*(SMALL?35:70),duration:SMALL?.7:.9,ease:'power4.out',
       scrollTrigger:{trigger:el,start:'top 85%'}});
   });
 
   // arsenal wall
-  gsap.from('.wall .w',{y:SMALL?24:70,opacity:0,rotation:SMALL?0:()=>rand(-5,5),duration:SMALL?.4:.6,ease:'power3.out',
-    stagger:{each:SMALL?.012:.02,from:SMALL?'start':'random'},
+  gsap.from('.wall .w',{y:SMALL?40:70,opacity:0,rotation:SMALL?()=>rand(-3,3):()=>rand(-5,5),duration:SMALL?.5:.6,ease:'power3.out',
+    stagger:{each:SMALL?.015:.02,from:'random'},
     onComplete:()=>gsap.set('.wall .w',{clearProps:'transform'}),
     scrollTrigger:{trigger:'.wall',start:'top 82%'}});
   $$('.bslide').forEach(el=>{
@@ -925,9 +932,9 @@ function initScroll(){
   });
 
   // contact rises
-  gsap.from('.say',{yPercent:SMALL?14:45,ease:'none',
+  gsap.from('.say',{yPercent:SMALL?25:45,ease:'none',
     scrollTrigger:{trigger:'#s4',start:'top bottom',end:'top 15%',scrub:true}});
-  gsap.from('.mission',{yPercent:SMALL?10:30,ease:'none',
+  gsap.from('.mission',{yPercent:SMALL?20:30,ease:'none',
     scrollTrigger:{trigger:'#s4',start:'top bottom',end:'top 40%',scrub:true}});
 
   // the page turns sideways — pinned horizontal spread
@@ -999,6 +1006,11 @@ addEventListener('keydown',e=>{
     tl.to('#exit-wipe .strip', {x: 0, duration: .72, ease: 'power4.inOut', stagger: .06})
       .to('#exit-wipe .l-mid', {autoAlpha: 1, duration: .32, ease: 'power3.out'}, '-=0.2');
   }
+});
+const niToggle=$('#ni-toggle');
+if(niToggle) niToggle.addEventListener('click',()=>{
+  const closed=$('#nav-index').classList.toggle('closed');
+  niToggle.setAttribute('aria-expanded',String(!closed));
 });
 const cm=$('#copyMail');
 if(cm) cm.addEventListener('click',()=>{
