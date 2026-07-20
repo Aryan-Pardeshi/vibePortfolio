@@ -243,7 +243,12 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
   .masthead .mh-mid{display:none}
   .hero-side{position:static;width:auto;padding:0 3vw;margin-top:4vh;flex-direction:row;align-items:center;justify-content:space-between;gap:1.5em}
   .hero-side p{max-width:34ch}
-  .giant{font-size:clamp(3rem,15.5vw,9rem)}
+  /* Keep the print character on small screens without letting effects compete with the copy. */
+  .giant{font-size:clamp(3rem,15.5vw,9rem);text-shadow:.018em .018em 0 var(--acc)}
+  .giant2,.p-title{text-shadow:.02em .02em 0 var(--acc)}
+  .stamp{transform:rotate(-1deg);animation:none}
+  .w:nth-child(n){transform:none}
+  .ticker-in{animation-duration:46s}
   .pinwrap{height:auto;overflow:visible}
   .track{display:block;height:auto}
   .panel,.p-intro,.panel.proj,.p-oss{width:auto;height:auto;border-right:none;border-bottom:4px solid var(--ink)}
@@ -837,8 +842,8 @@ function boot(){
     introDone=true;
     return;
   }
-  gsap.from('.lltr',{scale:2.6,opacity:0,rotation:()=>rand(-16,16),
-    duration:.55,ease:'power4.out',stagger:.05,delay:.15});
+  gsap.from('.lltr',{scale:SMALL?1.25:2.6,opacity:0,rotation:SMALL?0:()=>rand(-16,16),
+    duration:SMALL?.35:.55,ease:'power4.out',stagger:SMALL?.018:.05,delay:.15});
   const cnt={v:0}, cEl=$('#lc'), lname=$('#lname');
   gsap.to(cnt,{v:100,duration:2,ease:'power2.inOut',
     onUpdate:()=>{
@@ -864,11 +869,11 @@ function boot(){
 function heroIntro(){
   measure();
   gsap.timeline({onComplete(){ introDone=true; }})
-    .from('#s0 .ltr',{yPercent:-130,opacity:0,duration:.85,ease:'bounce.out',
-      stagger:{each:.035,from:'random'}})
-    .from('.masthead>*',{scaleX:0,transformOrigin:'0 50%',duration:.5,ease:'power4',stagger:.08},'-=.5')
-    .from(['.hero-side','.deck'],{y:40,opacity:0,duration:.5,ease:'power3',stagger:.1},'-=.3')
-    .from('.ticker',{yPercent:100,duration:.5,ease:'power4'},'-=.4');
+    .from('#s0 .ltr',{yPercent:SMALL?-35:-130,opacity:0,duration:SMALL?.45:.85,ease:SMALL?'power2.out':'bounce.out',
+      stagger:{each:SMALL?.012:.035,from:SMALL?'start':'random'}})
+    .from('.masthead>*',{scaleX:0,transformOrigin:'0 50%',duration:SMALL?.3:.5,ease:'power4',stagger:SMALL?.04:.08},'-=.3')
+    .from(['.hero-side','.deck'],{y:SMALL?16:40,opacity:0,duration:SMALL?.35:.5,ease:'power3',stagger:SMALL?.05:.1},'-=.2')
+    .from('.ticker',{yPercent:SMALL?30:100,duration:SMALL?.3:.5,ease:'power4'},'-=.25');
 }
 
 /* ---------- scroll choreography ---------- */
@@ -876,51 +881,53 @@ function initScroll(){
   if(!window.gsap||!window.ScrollTrigger||RM) return;
   gsap.registerPlugin(ScrollTrigger);
 
-  // velocity skew — the page leans when you throw it
-  const skewSet=gsap.quickSetter('.skewable','skewY','deg');
-  const clampV=gsap.utils.clamp(-3.5,3.5);
-  const proxy={s:0};
-  ScrollTrigger.create({
-    onUpdate(self){
-      const v=clampV(self.getVelocity()/-350);
-      if(Math.abs(v)>Math.abs(proxy.s)){
-        proxy.s=v;
-        gsap.to(proxy,{s:0,duration:.65,ease:'power3',overwrite:true,
-          onUpdate:()=>skewSet(proxy.s)});
+  // Velocity skew is reserved for larger screens; touch scrolling stays visually stable.
+  if(!SMALL){
+    const skewSet=gsap.quickSetter('.skewable','skewY','deg');
+    const clampV=gsap.utils.clamp(-3.5,3.5);
+    const proxy={s:0};
+    ScrollTrigger.create({
+      onUpdate(self){
+        const v=clampV(self.getVelocity()/-350);
+        if(Math.abs(v)>Math.abs(proxy.s)){
+          proxy.s=v;
+          gsap.to(proxy,{s:0,duration:.65,ease:'power3',overwrite:true,
+            onUpdate:()=>skewSet(proxy.s)});
+        }
       }
-    }
-  });
+    });
+  }
 
-  // hero exit
-  gsap.to('.hero-core',{yPercent:-14,rotation:-1.4,ease:'none',
+  // Use a restrained parallax exit on mobile, with no rotation.
+  gsap.to('.hero-core',{yPercent:SMALL?-5:-14,rotation:SMALL?0:-1.4,ease:'none',
     scrollTrigger:{trigger:'#s0',start:'top top',end:'bottom top',scrub:true}});
 
   // section heads print themselves
   $$('.sec-head').forEach(h=>{
-    gsap.from(h,{yPercent:35,clipPath:'inset(0% 0% 100% 0%)',duration:.8,ease:'power4.out',
+    gsap.from(h,{yPercent:SMALL?14:35,clipPath:'inset(0% 0% 100% 0%)',duration:SMALL?.55:.8,ease:'power4.out',
       scrollTrigger:{trigger:h,start:'top 85%'}});
   });
 
   // jobs — press-printed rows
   $$('.job').forEach((el,i)=>{
-    gsap.from(el,{clipPath:'inset(0% 100% 0% 0%)',x:i%2?70:-70,duration:.9,ease:'power4.out',
+    gsap.from(el,{clipPath:'inset(0% 100% 0% 0%)',x:(i%2?1:-1)*(SMALL?18:70),duration:SMALL?.55:.9,ease:'power4.out',
       scrollTrigger:{trigger:el,start:'top 85%'}});
   });
 
   // arsenal wall
-  gsap.from('.wall .w',{y:70,opacity:0,rotation:()=>rand(-5,5),duration:.6,ease:'power3.out',
-    stagger:{each:.02,from:'random'},
+  gsap.from('.wall .w',{y:SMALL?24:70,opacity:0,rotation:SMALL?0:()=>rand(-5,5),duration:SMALL?.4:.6,ease:'power3.out',
+    stagger:{each:SMALL?.012:.02,from:SMALL?'start':'random'},
     onComplete:()=>gsap.set('.wall .w',{clearProps:'transform'}),
     scrollTrigger:{trigger:'.wall',start:'top 82%'}});
   $$('.bslide').forEach(el=>{
-    gsap.from(el,{xPercent:-6,opacity:0,duration:.7,ease:'power3',
+    gsap.from(el,{xPercent:SMALL?-2:-6,opacity:0,duration:SMALL?.45:.7,ease:'power3',
       scrollTrigger:{trigger:el,start:'top 90%'}});
   });
 
   // contact rises
-  gsap.from('.say',{yPercent:45,ease:'none',
+  gsap.from('.say',{yPercent:SMALL?14:45,ease:'none',
     scrollTrigger:{trigger:'#s4',start:'top bottom',end:'top 15%',scrub:true}});
-  gsap.from('.mission',{yPercent:30,ease:'none',
+  gsap.from('.mission',{yPercent:SMALL?10:30,ease:'none',
     scrollTrigger:{trigger:'#s4',start:'top bottom',end:'top 40%',scrub:true}});
 
   // the page turns sideways — pinned horizontal spread
