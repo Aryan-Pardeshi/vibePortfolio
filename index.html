@@ -875,7 +875,7 @@ function boot(){
       introDone=true;
       if(window.ScrollTrigger) ScrollTrigger.refresh();
     }
-  },7000);
+  },47000);
   if(RM||!window.gsap){
     loader.remove();
     document.documentElement.classList.remove('locked');
@@ -885,7 +885,7 @@ function boot(){
   gsap.from('.lltr',{scale:SMALL?1.25:2.6,opacity:0,rotation:SMALL?0:()=>rand(-16,16),
     duration:SMALL?.35:.55,ease:'power4.out',stagger:SMALL?.018:.05,delay:.15});
   const cnt={v:0}, cEl=$('#lc'), lname=$('#lname');
-  gsap.to(cnt,{v:100,duration:2,ease:'power2.inOut',
+  gsap.to(cnt,{v:100,duration:42,ease:'power2.inOut',
     onUpdate:()=>{
       cEl.textContent=String(Math.round(cnt.v)).padStart(3,'0');
       if(cnt.v > 50 && lname && lname.textContent !== 'COOKING...') lname.textContent = 'COOKING...';
@@ -893,9 +893,9 @@ function boot(){
   const ready=new Promise(res=>{
     if(document.readyState==='complete') res();
     else addEventListener('load',res,{once:true});
-    setTimeout(res,3800);
+    setTimeout(res,43800);
   });
-  Promise.all([ready,new Promise(r=>setTimeout(r,2350))]).then(()=>{
+  Promise.all([ready,new Promise(r=>setTimeout(r,42350))]).then(()=>{
     const tl=gsap.timeline({onComplete(){ loader.remove(); }});
     tl.to('.l-mid',{yPercent:-40,autoAlpha:0,duration:.32,ease:'power3.in'})
       .to('.strip',{xPercent:i=>i%2?103:-103,duration:.72,ease:'power4.inOut',stagger:.06},'-=.02')
