@@ -456,7 +456,7 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
     </div>
     <footer class="colophon">
       <span>SET IN ARCHIVO BLACK & SPACE MONO</span>
-      <span>ONE FILE. NO TEMPLATES.</span>
+      <span>TWO FILES. ONE IS A WEAPON.</span>
       <span>PRESS G FOR CHAOS</span>
       <span>© 2026 — MUMBAI, IN</span>
     </footer>
@@ -764,6 +764,14 @@ function cursorTick(){
 /* ---------- loader ---------- */
 function boot(){
   const loader=$('#loader');
+  if(location.search.includes('from=game') || document.referrer.includes('game.html')){
+    if(loader) loader.remove();
+    document.documentElement.classList.remove('locked');
+    introDone=true;
+    if(window.ScrollTrigger) ScrollTrigger.refresh();
+    heroIntro();
+    return;
+  }
   document.documentElement.classList.add('locked');
   // watchdog: never trap the user behind the loader (rAF may be throttled at load)
   setTimeout(()=>{
@@ -904,9 +912,37 @@ addEventListener('pointerdown',e=>{
   if(e.target instanceof Element && e.target.closest('a,button')) return;
   splat(e.clientX,e.clientY);
 });
+let gFiring = false;
 addEventListener('keydown',e=>{
   if(e.key==='g'||e.key==='G'){
-    if(window.gsap&&!RM) gsap.fromTo('#flash',{opacity:.85},{opacity:0,duration:.3,ease:'power2.out'});
+    if(!FINE) return; // desktop only
+    if(gFiring) return;
+    if(RM) { location.href = 'game.html'; return; } // reduced motion fallback
+    
+    gFiring = true;
+    if(window.gsap) gsap.fromTo('#flash',{opacity:.85},{opacity:0,duration:.3,ease:'power2.out'});
+    
+    document.documentElement.classList.add('locked');
+    const wipe = document.createElement('div');
+    wipe.id = 'exit-wipe';
+    wipe.style.cssText = 'position:fixed;inset:0;z-index:2000;pointer-events:none;';
+    wipe.innerHTML = `
+      <div class="strip" style="position:absolute;left:0;width:100%;height:calc(100%/6 + 1px);background:#101010;top:0;transform:translateX(103%)"></div>
+      <div class="strip" style="position:absolute;left:0;width:100%;height:calc(100%/6 + 1px);background:#101010;top:16.66%;transform:translateX(-103%)"></div>
+      <div class="strip" style="position:absolute;left:0;width:100%;height:calc(100%/6 + 1px);background:#101010;top:33.33%;transform:translateX(103%)"></div>
+      <div class="strip" style="position:absolute;left:0;width:100%;height:calc(100%/6 + 1px);background:#101010;top:50%;transform:translateX(-103%)"></div>
+      <div class="strip" style="position:absolute;left:0;width:100%;height:calc(100%/6 + 1px);background:#101010;top:66.66%;transform:translateX(103%)"></div>
+      <div class="strip" style="position:absolute;left:0;width:100%;height:calc(100%/6 + 1px);background:#101010;top:83.33%;transform:translateX(-103%)"></div>
+      <div class="l-mid" style="opacity:0;z-index:100;mix-blend-mode:normal;pointer-events:none;">
+        <div class="l-name" style="color: #FF2C00; font-size: clamp(2rem,6vw,5rem);text-shadow:none;">SYSTEM BREACH</div>
+        <div class="l-row" style="color: #E9E4D6;"><span>TYPING SPRINT LOADING</span></div>
+      </div>
+    `;
+    document.body.appendChild(wipe);
+    
+    const tl = gsap.timeline({onComplete: () => { location.href = 'game.html'; }});
+    tl.to('#exit-wipe .strip', {x: 0, duration: .72, ease: 'power4.inOut', stagger: .06})
+      .to('#exit-wipe .l-mid', {autoAlpha: 1, duration: .32, ease: 'power3.out'}, '-=0.2');
   }
 });
 const cm=$('#copyMail');
