@@ -181,11 +181,19 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
 .j-txt{font-size:clamp(.85rem,1.05vw,1rem);line-height:1.75}
 
 /* ============ S3 — ARSENAL ============ */
-.wall{display:flex;flex-wrap:wrap;align-items:center;gap:clamp(0.8rem, 1.5vw, 1.5rem);margin-top:6vh}
+.wall{display:flex;flex-wrap:wrap;align-items:baseline;gap:.45em .5em;margin-top:6vh}
 .w{font-family:var(--head);text-transform:uppercase;line-height:1;
   border:3px solid var(--ink);padding:.14em .3em;display:inline-block;
-  transition:box-shadow .12s,background .12s,color .12s}
-.w:hover{background:var(--acc);color:var(--on);transform:translate(-3px,-3px);box-shadow:5px 5px 0 var(--ink)}
+  transition:transform .12s,box-shadow .12s,background .12s,color .12s}
+.w:nth-child(4n+1){transform:rotate(-1.6deg)}
+.w:nth-child(4n+3){transform:rotate(1.3deg)}
+.w:nth-child(6n){transform:rotate(-2.4deg) translateY(.12em)}
+.w:nth-child(7n+2){transform:rotate(2deg) translateY(-.1em)}
+.w.inv{background:var(--ink);color:var(--bg)}
+.w.acc{background:var(--acc);color:var(--on)}
+.w.pop{box-shadow:.14em .14em 0 var(--acc)}
+.w:hover{background:var(--acc);color:var(--on);transform:translate(-3px,-3px) rotate(0deg);box-shadow:5px 5px 0 var(--ink)}
+.w.inv:hover{background:var(--acc)}
 .w.t1{font-size:clamp(2.2rem,6.4vw,6.8rem)}
 .w.t2{font-size:clamp(1.4rem,3.6vw,3.8rem)}
 .w.t3{font-size:clamp(.85rem,1.7vw,1.7rem);font-family:var(--mono);font-weight:700;letter-spacing:.08em}
@@ -389,19 +397,19 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
     <div class="kicker">SECTION 003 — THE ARSENAL</div>
     <h2 class="sec-head giant2 rip">THE ARSENAL</h2>
     <div class="wall">
-      <span class="w t1">PYTHON</span>
+      <span class="w t1 pop">PYTHON</span>
       <span class="w t1">C++</span>
-      <span class="w t1">LANGGRAPH</span>
-      <span class="w t2">MULTI-AGENT SYSTEMS</span>
+      <span class="w t1 acc">LANGGRAPH</span>
+      <span class="w t2 inv">MULTI-AGENT SYSTEMS</span>
       <span class="w t2">SCIKIT-LEARN</span>
       <span class="w t1">FASTAPI</span>
       <span class="w t2">LLM ORCHESTRATION</span>
-      <span class="w t1">DOCKER</span>
+      <span class="w t1 inv">DOCKER</span>
       <span class="w t2">REACT</span>
       <span class="w t2">ASYNCIO</span>
-      <span class="w t2">SQLALCHEMY</span>
+      <span class="w t2 pop">SQLALCHEMY</span>
       <span class="w t2">LANGCHAIN</span>
-      <span class="w t2">MCP</span>
+      <span class="w t2 acc">MCP</span>
       <span class="w t3">PYDANTIC</span>
       <span class="w t3">ALEMBIC</span>
       <span class="w t3">NGINX</span>
@@ -846,6 +854,7 @@ function initScroll(){
   // arsenal wall
   gsap.from('.wall .w',{y:70,opacity:0,rotation:()=>rand(-5,5),duration:.6,ease:'power3.out',
     stagger:{each:.02,from:'random'},
+    onComplete:()=>gsap.set('.wall .w',{clearProps:'transform'}),
     scrollTrigger:{trigger:'.wall',start:'top 82%'}});
   $$('.bslide').forEach(el=>{
     gsap.from(el,{xPercent:-6,opacity:0,duration:.7,ease:'power3',
