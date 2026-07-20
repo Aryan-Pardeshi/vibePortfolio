@@ -32,7 +32,7 @@
   --mono:'Space Mono','Courier New',monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scrollbar-width:none;-ms-overflow-style:none;overflow-x:clip}
+html{scrollbar-width:none;-ms-overflow-style:none;overflow-x:clip;scroll-behavior:smooth}
 ::-webkit-scrollbar{display:none;width:0;height:0}
 html.locked{overflow:hidden}
 html.has-cur, html.has-cur *{cursor:none!important}
@@ -226,9 +226,19 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
 .colophon{margin-top:12vh;border-top:3px solid var(--ink);padding-top:1.4em;
   display:flex;flex-wrap:wrap;gap:1em 3em;justify-content:space-between;
   font:700 10px/1.6 var(--mono);letter-spacing:.16em;text-transform:uppercase}
+/* ============ NAV INDEX ============ */
+#nav-index{position:fixed;bottom:3vh;right:3vw;z-index:90;border:3px solid var(--ink);background:var(--bg);color:var(--ink);padding:1.2em;display:flex;flex-direction:column;gap:.6em;min-width:200px;box-shadow:.4em .4em 0 color-mix(in srgb, var(--ink) 15%, transparent);transition:border-color .3s, background .3s, color .3s}
+.ni-title{font-family:var(--head);font-size:1.2rem;margin-bottom:.5em;border-bottom:3px solid var(--ink);padding-bottom:.3em;transition:border-color .3s}
+.ni-link{font:700 .8rem/1.2 var(--mono);text-transform:uppercase;color:var(--ink);text-decoration:none;transition:color .15s, padding-left .15s;display:block}
+.ni-link:hover{color:var(--acc);padding-left:.4em}
+.ni-link.active{color:var(--acc)}
+.ni-link.active::before{content:'✳ ';color:var(--acc)}
+.ni-prog{height:6px;background:color-mix(in srgb, var(--ink) 20%, transparent);margin-top:1em;position:relative}
+#ni-bar{position:absolute;left:0;top:0;bottom:0;background:var(--acc);width:0%}
 
 /* ============ RESPONSIVE ============ */
 @media (max-width:899px){
+  #nav-index{display:none}
   .masthead{grid-template-columns:1fr auto}
   .masthead .mh-mid{display:none}
   .hero-side{position:static;width:auto;padding:0 3vw;margin-top:4vh;flex-direction:row;align-items:center;justify-content:space-between;gap:1.5em}
@@ -298,10 +308,10 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
         <h3 class="p-title">DEEP<br>RESEARCH</h3>
         <p class="p-tag">A newsroom of machine researchers with one human editor-in-chief.</p>
         <dl class="spec">
-          <dt>CLASS</dt><dd>Production multi-agent AI research assistant</dd>
-          <dt>AGENTS</dt><dd>Specialized. Running in parallel. Coordinating with each other.</dd>
-          <dt>CONTROL</dt><dd>Human-in-the-loop interrupts — a person can stop the machines mid-thought, review, approve.</dd>
-          <dt>OUTPUT</dt><dd>Real-time streaming, token by token</dd>
+          <dt>PROBLEM</dt><dd>Research takes hours.</dd>
+          <dt>SOLUTION</dt><dd>5 specialized agents, running in parallel, coordinating with each other.</dd>
+          <dt>CONTROL</dt><dd>Human-in-the-loop interrupts — stop the machines mid-thought, review, approve.</dd>
+          <dt>RESULT</dt><dd>Comprehensive reports in minutes, streamed token by token.</dd>
           <dt>STACK</dt><dd>LangGraph · FastAPI · React · Docker · nginx</dd>
         </dl>
         <div class="p-stamp"><a href="https://github.com/Aryan-Pardeshi/DeepResearch_AI" target="_blank" rel="noopener" class="stamp">IT RUNS ↗</a></div>
@@ -371,9 +381,9 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
         <div class="j-ix">02</div>
         <div>
           <h3 class="j-org">SWDC</h3>
-          <div class="j-role">ENGINEERING INTERN — BACKEND OWNER — JULY 2026</div>
+          <div class="j-role">ENGINEERING INTERN — JULY 2026</div>
         </div>
-        <p class="j-txt">Owned the backend architecture of a shipped AI learning product — every route, model, migration and seed pipeline. See exhibit 002, opposite page.</p>
+        <p class="j-txt">Built 20+ API endpoints<br>Designed database schema<br>Integrated ML models</p>
       </div>
       <div class="job">
         <div class="j-ix">03</div>
@@ -432,6 +442,10 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
       <div class="kicker">THE MISSION — VERBATIM</div>
       <p>“Building intelligent and autonomous workflows for real business problems. Deeply involved in research on large language models and multimodal AI.”</p>
     </blockquote>
+    <blockquote class="mission" style="margin-top: -8vh;">
+      <div class="kicker">WHY AI?</div>
+      <p>For decades, code only did exactly what it was told. Now, it makes decisions. I've always been obsessed with systems that run themselves, but the leap from rigid scripts to autonomous reasoning is the most profound shift in computing history. I don't just want to watch it happen—I want to be the one wiring the nervous system of that new world.</p>
+    </blockquote>
     <div class="say">
       <h2 class="giant rip">SAY THE</h2>
       <h2 class="giant rip">WORD.</h2>
@@ -459,6 +473,16 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
   </div>
 </section>
 </main>
+
+<nav id="nav-index" aria-label="Contents">
+  <div class="ni-title">INDEX</div>
+  <a href="#s0" class="ni-link active">00. FRONT PAGE</a>
+  <a href="#s1" class="ni-link">01. SYSTEMS</a>
+  <a href="#s2" class="ni-link">02. FIELD WORK</a>
+  <a href="#s3" class="ni-link">03. ARSENAL</a>
+  <a href="#s4" class="ni-link">04. CONTACT</a>
+  <div class="ni-prog"><div id="ni-bar"></div></div>
+</nav>
 
 <canvas id="fx" aria-hidden="true"></canvas>
 <div id="flash" aria-hidden="true"></div>
@@ -511,63 +535,71 @@ const cur = JSON.parse(JSON.stringify(THEMES[0]));
 let secIdx = 0;
 const css = c=>`rgb(${c[0]|0},${c[1]|0},${c[2]|0})`;
 
+// cached scroll-derived theme target — rects are only re-read when scroll or
+// viewport changes (or every 250ms, to catch layout shifts without a scroll)
+let thScroll=-1, thVH=-1, thStamp=0, thT1=THEMES[0], thT2=THEMES[0], thT=0, thIdx=0;
 function themeTick(){
-  const cy = H() * 0.5;
-  const transitionZone = Math.min(220, H() * 0.25);
-  
-  let theme1 = null, theme2 = null, smoothT = 0;
-  
-  // Check if we are near any boundary
-  for (let i = 0; i < secs.length - 1; i++) {
-    const r = secs[i].getBoundingClientRect();
-    const d = r.bottom - cy;
-    if (Math.abs(d) < transitionZone) {
-      theme1 = THEMES[i];
-      theme2 = THEMES[i+1];
-      const tFrac = (transitionZone - d) / (2 * transitionZone);
-      smoothT = tFrac * tFrac * (3 - 2 * tFrac); // smoothstep
-      break;
-    }
-  }
-  
-  // If not near a boundary, find the active section
-  if (!theme1) {
-    let activeIdx = 0;
-    for (let i = 0; i < secs.length; i++) {
+  const sy = scrollY, vh = H(), now = performance.now();
+  if (sy !== thScroll || vh !== thVH || now - thStamp > 250) {
+    thScroll = sy; thVH = vh; thStamp = now;
+    const cy = vh * 0.5;
+    const transitionZone = Math.min(220, vh * 0.25);
+
+    thT1 = null; thT2 = null; thT = 0;
+
+    // Check if we are near any boundary
+    for (let i = 0; i < secs.length - 1; i++) {
       const r = secs[i].getBoundingClientRect();
-      if (r.top <= cy && r.bottom > cy) {
-        activeIdx = i;
+      const d = r.bottom - cy;
+      if (Math.abs(d) < transitionZone) {
+        thT1 = THEMES[i];
+        thT2 = THEMES[i+1];
+        const tFrac = (transitionZone - d) / (2 * transitionZone);
+        thT = tFrac * tFrac * (3 - 2 * tFrac); // smoothstep
         break;
       }
     }
-    theme1 = THEMES[activeIdx];
-    theme2 = THEMES[activeIdx];
-    smoothT = 0;
+
+    // Find the active section
+    thIdx = secIdx;
+    for (let i = 0; i < secs.length; i++) {
+      const r = secs[i].getBoundingClientRect();
+      if (r.top <= cy && r.bottom > cy) {
+        thIdx = i;
+        break;
+      }
+    }
+    if (!thT1) {
+      thT1 = THEMES[thIdx];
+      thT2 = THEMES[thIdx];
+      thT = 0;
+    }
   }
-  
-  // Interpolate target theme
+
+  if (thIdx !== secIdx) {
+    secIdx = thIdx;
+    onSection(thIdx);
+  }
+
+  // Interpolate toward the cached target every frame (keeps easing after scroll stops)
   const k = RM ? 1 : 0.08; // blend speed
   for (const key of ['bg', 'ink', 'acc', 'on']) {
     for (let i = 0; i < 3; i++) {
-      const target = lerp(theme1[key][i], theme2[key][i], smoothT);
+      const target = lerp(thT1[key][i], thT2[key][i], thT);
       cur[key][i] = lerp(cur[key][i], target, k);
     }
   }
-  
-  // Update section class/state
-  let idx = secIdx;
-  for (let i = 0; i < secs.length; i++) {
-    const r = secs[i].getBoundingClientRect();
-    if (r.top <= cy && r.bottom > cy) {
-      idx = i;
-      break;
-    }
+
+  // Update nav progress
+  const activeSec = secs[secIdx];
+  if(activeSec) {
+    const r = activeSec.getBoundingClientRect();
+    let prog = (H() * 0.5 - r.top) / (r.height || 1);
+    prog = Math.max(0, Math.min(1, prog));
+    const niBar = document.getElementById('ni-bar');
+    if(niBar) niBar.style.width = (prog * 100) + '%';
   }
-  if (idx !== secIdx) {
-    secIdx = idx;
-    onSection(idx);
-  }
-  
+
   const b = css(cur.bg), n = css(cur.ink), a = css(cur.acc), o = css(cur.on);
   const sig = b + n + a + o;
   if (sig !== lastSig) {
@@ -583,6 +615,13 @@ let lastSig='';
 function onSection(i){
   document.body.dataset.sec=i;
   if(curInner) curInner.className='ci s'+i+(mode?' '+mode:'');
+  
+  // nav index update
+  const links = document.querySelectorAll('.ni-link');
+  links.forEach((l, idx) => {
+    if(idx === i) l.classList.add('active');
+    else l.classList.remove('active');
+  });
 }
 
 /* ---------- mouse ---------- */
@@ -672,7 +711,8 @@ let dctx=null, dust=[];
 function initDust(){
   if(RM) return;
   dctx=fit($('#dust')); dust=[];
-  const gap=SMALL?46:36;
+  // grow the grid gap on large screens so the field never exceeds ~350 particles
+  const gap=Math.max(SMALL?46:36, Math.sqrt(W()*H()/(SMALL?180:350)));
   for(let x=gap/2;x<W();x+=gap)
     for(let y=gap/2;y<H();y+=gap)
       dust.push({x:x+rand(-9,9),y:y+rand(-9,9),s:rand(.8,1.9),
@@ -681,13 +721,19 @@ function initDust(){
 function dustTick(t){
   if(!dctx) return;
   dctx.clearRect(0,0,W(),H());
-  const inkC=css(cur.ink), accC=css(cur.acc);
+  // two passes so fillStyle changes twice per frame, not per particle
+  dctx.fillStyle=css(cur.ink);
   for(const p of dust){
     p.y+=p.sp*0.14; if(p.y>H()) p.y-=H();
-    const wob=Math.sin(t*0.0006+p.ph)*5;
+    if(p.acc) continue;
     dctx.globalAlpha=Math.max(.02,.05+.05*Math.sin(t*0.001+p.ph*2));
-    dctx.fillStyle=p.acc?accC:inkC;
-    dctx.fillRect(p.x+wob,p.y,p.s,p.s);
+    dctx.fillRect(p.x+Math.sin(t*0.0006+p.ph)*5,p.y,p.s,p.s);
+  }
+  dctx.fillStyle=css(cur.acc);
+  for(const p of dust){
+    if(!p.acc) continue;
+    dctx.globalAlpha=Math.max(.02,.05+.05*Math.sin(t*0.001+p.ph*2));
+    dctx.fillRect(p.x+Math.sin(t*0.0006+p.ph)*5,p.y,p.s,p.s);
   }
   dctx.globalAlpha=1;
 }
