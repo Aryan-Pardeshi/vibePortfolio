@@ -60,6 +60,8 @@ html.has-cur #cur{display:block}
 .ci.m-link::after{display:none}
 .ci.m-text{width:7px;height:54px;border-radius:0;background:var(--acc);transform:rotate(0deg)}
 .ci.m-text::after{display:none}
+.ci.m-glass{width:36px;height:24px;border-radius:12px;background:rgba(255,255,255,0.18);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1.5px solid rgba(255,255,255,0.45);box-shadow:0 6px 20px rgba(0,0,0,0.2);transform:rotate(0deg);margin:-12px 0 0 -18px}
+.ci.m-glass::after{display:none}
 #curTag{position:fixed;left:0;top:0;z-index:120;pointer-events:none;opacity:0;
   font:700 11px/1 var(--mono);letter-spacing:.14em;
   background:var(--ink);color:var(--bg);padding:6px 9px;white-space:nowrap;
@@ -85,7 +87,12 @@ html.has-cur #curTag{display:block}
 .stamp{display:inline-block;font-family:var(--head);text-transform:uppercase;
   font-size:clamp(.9rem,1.6vw,1.5rem);line-height:1.05;letter-spacing:.05em;
   color:var(--acc);border:4px solid var(--acc);padding:.45em .7em;
-  transform:rotate(-4deg);background:transparent}
+  transform:rotate(-4deg);background:transparent;
+  animation:stampFloat 4s ease-in-out infinite alternate}
+@keyframes stampFloat{
+  from{transform:rotate(-4deg) translateY(0)}
+  to{transform:rotate(-3deg) translateY(-4px)}
+}
 #s1 .stamp{color:var(--ink);border-color:var(--ink)}
 a.stamp{transition:background .15s}
 a.stamp:hover{background:var(--acc);color:var(--on)}
@@ -174,7 +181,9 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
 .w.t3{font-size:clamp(.85rem,1.7vw,1.7rem);font-family:var(--mono);font-weight:700;letter-spacing:.08em}
 .bars{margin-top:9vh;display:flex;flex-direction:column}
 .bar{border-top:3px solid var(--ink);padding:1.1em 0;
-  font:700 clamp(.72rem,1vw,.95rem)/1.6 var(--mono);letter-spacing:.14em;text-transform:uppercase}
+  font:700 clamp(.72rem,1vw,.95rem)/1.6 var(--mono);letter-spacing:.14em;text-transform:uppercase;
+  transition:background .2s,color .2s,padding-left .2s}
+.bar:hover{background:color-mix(in srgb, var(--acc) 6%, transparent);padding-left:.6em}
 .bar:last-child{border-bottom:3px solid var(--ink)}
 .bar b{color:var(--acc)}
 .bar.big{font-family:var(--head);font-weight:400;font-size:clamp(1.3rem,3.4vw,3.4rem);letter-spacing:0;line-height:1.05}
@@ -363,7 +372,7 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
           <h3 class="j-org">SMLRA</h3>
           <div class="j-role">FIRST-YEAR REPRESENTATIVE — ML RESEARCH ASSOCIATION</div>
         </div>
-        <p class="j-txt">Somaiya Machine Learning Research Association. Co-led a two-day hands-on workshop on AI workflow automation and taught the full module on email automation with n8n. Teaching a system is the final proof you understand it.</p>
+        <p class="j-txt">Somaiya Machine Learning Research Association. Co-facilitated a two-day hands-on n8n workshop on AI workflow automation and taught the full module on email automation. Teaching a system is the final proof you understand it.</p>
       </div>
     </div>
   </div>
@@ -476,7 +485,7 @@ $('#today').textContent = new Date().toLocaleDateString('en-GB',
 const THEMES=[
   {bg:[233,228,214], ink:[16,16,16],    acc:[255,44,0],   on:[246,241,229]}, // hero: paper / red
   {bg:[16,7,22],     ink:[233,228,214], acc:[52,21,57],   on:[255,255,255]}, // systems: near-black purple / ivory / plum #341539
-  {bg:[255,44,0],    ink:[246,241,229], acc:[16,16,16],   on:[246,241,229]}, // field: red / black
+  {bg:[163,0,0],     ink:[246,241,229], acc:[16,16,16],   on:[246,241,229]}, // field: red / black (darker red #A30000)
   {bg:[233,228,214], ink:[16,16,16],    acc:[36,48,255],  on:[246,241,229]}, // arsenal: paper / blue
   {bg:[16,16,16],    ink:[233,228,214], acc:[255,44,0],   on:[246,241,229]}, // contact: ink / red
 ];
@@ -486,23 +495,71 @@ let secIdx = 0;
 const css = c=>`rgb(${c[0]|0},${c[1]|0},${c[2]|0})`;
 
 function themeTick(){
-  const cy = H()*0.5;
-  let idx = secIdx;
-  for(let i=0;i<secs.length;i++){
+  const cy = H() * 0.5;
+  const transitionZone = Math.min(220, H() * 0.25);
+  
+  let theme1 = null, theme2 = null, smoothT = 0;
+  
+  // Check if we are near any boundary
+  for (let i = 0; i < secs.length - 1; i++) {
     const r = secs[i].getBoundingClientRect();
-    if(r.top<=cy && r.bottom>cy){ idx=i; break; }
+    const d = r.bottom - cy;
+    if (Math.abs(d) < transitionZone) {
+      theme1 = THEMES[i];
+      theme2 = THEMES[i+1];
+      const tFrac = (transitionZone - d) / (2 * transitionZone);
+      smoothT = tFrac * tFrac * (3 - 2 * tFrac); // smoothstep
+      break;
+    }
   }
-  if(idx!==secIdx){ secIdx=idx; onSection(idx); }
-  const t = THEMES[secIdx], k = RM?1:0.075;
-  for(const key of ['bg','ink','acc','on'])
-    for(let i=0;i<3;i++) cur[key][i]=lerp(cur[key][i],t[key][i],k);
-  const b=css(cur.bg), n=css(cur.ink), a=css(cur.acc), o=css(cur.on);
-  const sig=b+n+a+o;
-  if(sig!==lastSig){                 // only touch :root when a channel actually moved
-    lastSig=sig;
-    const st=document.documentElement.style;
-    st.setProperty('--bg',b); st.setProperty('--ink',n);
-    st.setProperty('--acc',a); st.setProperty('--on',o);
+  
+  // If not near a boundary, find the active section
+  if (!theme1) {
+    let activeIdx = 0;
+    for (let i = 0; i < secs.length; i++) {
+      const r = secs[i].getBoundingClientRect();
+      if (r.top <= cy && r.bottom > cy) {
+        activeIdx = i;
+        break;
+      }
+    }
+    theme1 = THEMES[activeIdx];
+    theme2 = THEMES[activeIdx];
+    smoothT = 0;
+  }
+  
+  // Interpolate target theme
+  const k = RM ? 1 : 0.08; // blend speed
+  for (const key of ['bg', 'ink', 'acc', 'on']) {
+    for (let i = 0; i < 3; i++) {
+      const target = lerp(theme1[key][i], theme2[key][i], smoothT);
+      cur[key][i] = lerp(cur[key][i], target, k);
+    }
+  }
+  
+  // Update section class/state
+  let idx = secIdx;
+  for (let i = 0; i < secs.length; i++) {
+    const r = secs[i].getBoundingClientRect();
+    if (r.top <= cy && r.bottom > cy) {
+      idx = i;
+      break;
+    }
+  }
+  if (idx !== secIdx) {
+    secIdx = idx;
+    onSection(idx);
+  }
+  
+  const b = css(cur.bg), n = css(cur.ink), a = css(cur.acc), o = css(cur.on);
+  const sig = b + n + a + o;
+  if (sig !== lastSig) {
+    lastSig = sig;
+    const st = document.documentElement.style;
+    st.setProperty('--bg', b);
+    st.setProperty('--ink', n);
+    st.setProperty('--acc', a);
+    st.setProperty('--on', o);
   }
 }
 let lastSig='';
@@ -661,10 +718,10 @@ function initCursor(){
     if(!(t instanceof Element)) return;
     const tagged=t.closest('[data-cur]');
     const link=t.closest('a,button');
-    const txt=t.closest('.rip');
+    const txt=t.closest('.rip, p, h1, h2, h3, .p-tag, .oss-txt, .j-txt, .bar, .spec dt, .spec dd');
     if(tagged) setMode('m-link',tagged.dataset.cur);
     else if(link) setMode('m-link','OPEN');
-    else if(txt) setMode('m-text','');
+    else if(txt) setMode('m-glass','');
     else setMode('','');
   });
 }
