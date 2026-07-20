@@ -245,9 +245,9 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
 <!-- ================= S0 HERO ================= -->
 <section class="sec" id="s0">
   <header class="masthead">
-    <div>THE PARDESHI DISPATCH</div>
+    <div></div>
     <div class="mh-mid">MUMBAI EDITION — <span id="today">2026</span></div>
-    <div class="mh-r">VOL. I ✳ FINAL EDITION</div>
+    <div class="mh-r"></div>
   </header>
   <div class="hero-core skewable">
     <h1 class="giant rip">ARYAN</h1>
@@ -409,7 +409,6 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
     <div class="bars">
       <div class="bar bslide">STANFORD × DEEPLEARNING.AI — MACHINE LEARNING SPECIALIZATION — <b>COMPLETE</b></div>
       <div class="bar bslide">K.J. SOMAIYA COLLEGE OF ENGINEERING — B.TECH, INFORMATION TECHNOLOGY — 2025→2029 — MUMBAI</div>
-      <div class="bar bslide big">TARGET LOCKED — <b>GSOC 2027</b></div>
       <div class="bar bslide">CURRENTLY — DIRECT OUTREACH TO AI STARTUPS — THINKS IN SYSTEMS, NOT SCRIPTS</div>
     </div>
   </div>
@@ -459,8 +458,8 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
   <div class="strip"></div><div class="strip"></div><div class="strip"></div>
   <div class="strip"></div><div class="strip"></div><div class="strip"></div>
   <div class="l-mid">
-    <div class="l-name lsplit">ARYAN PARDESHI</div>
-    <div class="l-row"><span id="lc">000</span><span><span class="spin">✳</span>&nbsp;&nbsp;PRINTING THE DISPATCH — MUMBAI</span></div>
+    <div class="l-name lsplit" id="lname">LODING...</div>
+    <div class="l-row"><span id="lc">000</span><span><span class="spin">✳</span>&nbsp;&nbsp;PRINTING THE DISPATCH</span></div>
   </div>
 </div>
 
@@ -762,9 +761,12 @@ function boot(){
   }
   gsap.from('.lltr',{scale:2.6,opacity:0,rotation:()=>rand(-16,16),
     duration:.55,ease:'power4.out',stagger:.05,delay:.15});
-  const cnt={v:0}, cEl=$('#lc');
+  const cnt={v:0}, cEl=$('#lc'), lname=$('#lname');
   gsap.to(cnt,{v:100,duration:2,ease:'power2.inOut',
-    onUpdate:()=>cEl.textContent=String(Math.round(cnt.v)).padStart(3,'0')});
+    onUpdate:()=>{
+      cEl.textContent=String(Math.round(cnt.v)).padStart(3,'0');
+      if(cnt.v > 50 && lname && lname.textContent !== 'COOKING...') lname.textContent = 'COOKING...';
+    }});
   const ready=new Promise(res=>{
     if(document.readyState==='complete') res();
     else addEventListener('load',res,{once:true});
