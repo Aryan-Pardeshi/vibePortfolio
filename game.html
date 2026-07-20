@@ -177,10 +177,10 @@ function splat(x, y) {
   for (let i = 0; i < 20; i++) {
     specks.push({
       x, y,
-      vx: (Math.random() - 0.5) * 8,
-      vy: (Math.random() - 0.5) * 8,
-      life: 1,
-      s: Math.random() * 8 + 4,
+      vx: (Math.random() - 0.5) * 10,
+      vy: (Math.random() - 0.5) * 10,
+      life: 1.2,
+      s: Math.random() * 8 + 6,
       r: Math.random() * Math.PI * 2
     });
   }
@@ -190,7 +190,7 @@ function fxTick() {
   ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
   for (let i = specks.length - 1; i >= 0; i--) {
     let p = specks[i];
-    p.life -= 0.02;
+    p.life -= 0.028;
     p.x += p.vx;
     p.y += p.vy;
     p.vx *= 0.94;
@@ -201,7 +201,8 @@ function fxTick() {
     ctx.rotate(p.r);
     ctx.globalAlpha = p.life * 0.8;
     ctx.fillStyle = '#FF2C00';
-    ctx.fillRect(-p.s/2, -p.s/2, p.s, p.s);
+    let s = p.s * p.life;
+    ctx.fillRect(-s/2, -s/2, s, s);
     ctx.restore();
   }
 }

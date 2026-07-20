@@ -70,10 +70,6 @@ html.has-cur #cur{display:block}
 .ci.s4{border-radius:50%}
 .ci.m-link{width:58px;height:58px;border-radius:50%;background:var(--acc);transform:rotate(0deg)}
 .ci.m-link::after{display:none}
-.ci.m-text{width:7px;height:54px;border-radius:0;background:var(--acc);transform:rotate(0deg)}
-.ci.m-text::after{display:none}
-.ci.m-glass{width:36px;height:24px;border-radius:12px;background:rgba(255,255,255,0.18);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1.5px solid rgba(255,255,255,0.45);box-shadow:0 6px 20px rgba(0,0,0,0.2);transform:rotate(0deg);margin:-12px 0 0 -18px}
-.ci.m-glass::after{display:none}
 #curTag{position:fixed;left:0;top:0;z-index:120;pointer-events:none;opacity:0;
   font:700 11px/1 var(--mono);letter-spacing:.14em;
   background:var(--ink);color:var(--bg);padding:6px 9px;white-space:nowrap;
@@ -697,19 +693,27 @@ function dustTick(t){
 }
 
 /* ---------- fx (cursor trail + splats) ---------- */
-let fctx=null; const specks=[]; let ltx=0,lty=0;
+let fctx=null; const specks=[]; let ltx=null,lty=null;
 function trailMove(x,y){
   if(!fctx||RM) return;
-  if(Math.hypot(x-ltx,y-lty)>16){
+  if(ltx===null) { ltx=x; lty=y; return; }
+  const d = Math.hypot(x-ltx,y-lty);
+  if(d>12){
+    const steps = Math.max(1, Math.floor(d/12));
+    if (steps > 30) { ltx=x; lty=y; return; }
+    for(let i=1; i<=steps; i++){
+      const px = lerp(ltx, x, i/steps);
+      const py = lerp(lty, y, i/steps);
+      specks.push({x:px,y:py,vx:rand(-1,1),vy:rand(-1,1),life:1.2,s:rand(4,9),r:rand(0,6.28)});
+    }
     ltx=x; lty=y;
-    specks.push({x,y,vx:rand(-.5,.5),vy:rand(-.5,.5),life:1,s:rand(3,7),r:rand(0,6.28)});
-    if(specks.length>160) specks.shift();
+    if(specks.length>250) specks.splice(0, specks.length-250);
   }
 }
 function splat(x,y){
   if(!fctx||RM) return;
-  for(let i=0;i<12;i++)
-    specks.push({x,y,vx:rand(-3.4,3.4),vy:rand(-3.4,3.4),life:1,s:rand(4,10),r:rand(0,6.28)});
+  for(let i=0;i<16;i++)
+    specks.push({x,y,vx:rand(-5,5),vy:rand(-5,5),life:1.2,s:rand(5,12),r:rand(0,6.28)});
 }
 function fxTick(){
   if(!fctx) return;
@@ -739,10 +743,8 @@ function initCursor(){
     if(!(t instanceof Element)) return;
     const tagged=t.closest('[data-cur]');
     const link=t.closest('a,button');
-    const txt=t.closest('.rip, p, h1, h2, h3, .p-tag, .oss-txt, .j-txt, .bar, .spec dt, .spec dd');
     if(tagged) setMode('m-link',tagged.dataset.cur);
     else if(link) setMode('m-link','OPEN');
-    else if(txt) setMode('m-glass','');
     else setMode('','');
   });
 }
