@@ -474,9 +474,6 @@ a.stamp:hover{background:var(--acc);color:var(--on)}
       <a class="row" href="https://linkedin.com/in/aryan-pardeshi-dev" target="_blank" rel="noopener">
         <span class="r-name">LINKEDIN</span><span class="r-url">linkedin.com/in/aryan-pardeshi-dev</span><span class="arr">↗</span>
       </a>
-      <a class="row" href="mailto:aryanpardeshi605@gmail.com">
-        <span class="r-name">EMAIL</span><span class="r-url">aryanpardeshi605@gmail.com</span><span class="arr">→</span>
-      </a>
     </div>
     <footer class="colophon">
       <span>SET IN ARCHIVO BLACK & SPACE MONO</span>
@@ -715,7 +712,7 @@ function ripTick(){
 
 /* ---------- canvases ---------- */
 function fit(cv){
-  const d=Math.min(devicePixelRatio||1,2);
+  const d=Math.min(devicePixelRatio||1,1.5);
   cv.width=W()*d; cv.height=H()*d;
   cv.style.width=W()+'px'; cv.style.height=H()+'px';
   const c=cv.getContext('2d'); c.setTransform(d,0,0,d,0,0);
@@ -780,17 +777,20 @@ function splat(x,y){
 function fxTick(){
   if(!fctx) return;
   fctx.clearRect(0,0,W(),H());
-  const accC=css(cur.acc);
+  fctx.fillStyle=css(cur.acc);
   for(let i=specks.length-1;i>=0;i--){
     const p=specks[i];
     p.life-=0.028; p.x+=p.vx; p.y+=p.vy; p.vx*=0.94; p.vy*=0.94;
     if(p.life<=0){ specks.splice(i,1); continue; }
-    fctx.save();
-    fctx.translate(p.x,p.y); fctx.rotate(p.r);
-    fctx.globalAlpha=p.life*0.65; fctx.fillStyle=accC;
-    const s=p.s*p.life;
-    fctx.fillRect(-s/2,-s/2,s,s);
-    fctx.restore();
+    const s=p.s*p.life, h=s/2, c=Math.cos(p.r), sn=Math.sin(p.r);
+    fctx.globalAlpha=p.life*0.65;
+    fctx.beginPath();
+    fctx.moveTo(p.x+(-h*c - -h*sn), p.y+(-h*sn + -h*c));
+    fctx.lineTo(p.x+( h*c - -h*sn), p.y+( h*sn + -h*c));
+    fctx.lineTo(p.x+( h*c -  h*sn), p.y+( h*sn +  h*c));
+    fctx.lineTo(p.x+(-h*c -  h*sn), p.y+(-h*sn +  h*c));
+    fctx.closePath();
+    fctx.fill();
   }
 }
 
@@ -1025,14 +1025,18 @@ if(cm) cm.addEventListener('click',()=>{
 });
 
 /* ---------- master loop ---------- */
-let lastT=0, lastTick=0;
+let lastT=0, lastTick=0, frameN=0;
 function frame(t){
   lastTick=performance.now();
   const dt=lastT?t-lastT:16; lastT=t;
   mouse.vx=mouse.x-mouse.px; mouse.vy=mouse.y-mouse.py;
   mouse.px=mouse.x; mouse.py=mouse.y;
   themeTick();
-  if(!RM){ dustTick(t); ripTick(); fxTick(); cursorTick(); }
+  if(!RM){
+    frameN++;
+    if(frameN&1) dustTick(t); // ambient drift only needs ~30fps
+    ripTick(); fxTick(); cursorTick();
+  }
   requestAnimationFrame(frame);
 }
 // if rAF is throttled/dead, keep the whole site (GSAP included) alive via wall clock
